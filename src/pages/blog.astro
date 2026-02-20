@@ -1,5 +1,31 @@
 ---
+import { formatDate } from "../utils/date";
+import { getCollection } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
+
+const blogs = await getCollection("blog");
+blogs.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<PageLayout title="blog"> hello blog </PageLayout>
+<PageLayout title="blog">
+  <div>
+    <div id="header" class="flex font-semibold pl-4">
+      <div class="w-1/3">Date</div>
+      <div class="w-2/3">Title</div>
+    </div>
+
+    <div>
+      {
+        blogs.map((item) => (
+          <a
+            href={`/blog/${item.data.slug}`}
+            class="flex hover:bg-gray-100 cursor-pointer py-2 items-center pl-4"
+          >
+            <div class="w-1/3">{formatDate(item.data.date)}</div>
+            <div class="w-2/3">{item.data.title}</div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</PageLayout>
