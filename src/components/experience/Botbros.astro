@@ -1,0 +1,100 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const airshipHighlights = [
+  "Led full-stack delivery for bookings, agent management, and cash-flow operations.",
+  "Drove Agile cadenceand code reviews to improve consistency and maintainability.",
+  "Researched and applied AWS patterns for scale and reliability.",
+  "Recognized Top 3 in the IdeaSpace Acceleration Program.",
+  "Technologies used: React, Redux, Node.js, Serverless, AWS (Lambda, API Gateway, RDS, Cognito, CloudWatch, CloudFront, S3).",
+];
+
+const peopleserveHighlights = [
+  "Scoped with clients to clarify requirements and realistic timelines.",
+  "Mentored interns and junior developers to raise delivery quality.",
+  "Provided production support and issue resolution post-launch.",
+  "Technologies used: Laravel 5.2, React, Redux, MariaDB, MySQL 5.6.",
+];
+
+const spectrumHighlights = [
+  "Created database schema.",
+  "Written documentation for the applications custom http requests and responses.",
+  "Collaborated with freelance developers.",
+  "Technologies used: PHP Slim 3",
+];
+
+const entergoHighlights = [
+  "Coded their Homepage, About, Contact, Career and Booking pages.",
+  "Integrated Entrego's API with the login and booking pages.",
+  "Cooperated with Zalora team with regards with some changes in their booking website.",
+  "Suggested and implemented changes in the UI.",
+  "Created reusable components using React.",
+  "Technologies used: HTML, CSS, React JS, Redux",
+];
+
+const chatbotsHighlights = [
+  "Research and developed facebook messenger and slack bots.",
+  "Technologies used: Botkit JS, Chatfuel, Node JS",
+];
+
+const honestBeeHighlights = [
+  "Created BotBros AI website using HTML, CSS and JS.",
+  "Modified the implemented PHP back-end.",
+  "Technologies used: vanilla HTML, CSS and JS, PHP 7.1.",
+];
+
+const botbrosHighlights = [
+  "Created BotBros AI website using Ghost CMS, HTML, CSS and JS.",
+  "Technologies used: Ghost CMS, vanilla HTML, CSS and JS.",
+];
+---
+
+<WorkSection
+  title="Botbros AI, Rocket Labs Consulting Inc."
+  duration="Jun 2017 - Jan 2021"
+  isIndented={false}
+>
+  <ExperienceHighlights
+    items={airshipHighlights}
+    projectName="Airship Logistics Management System"
+    jobTitle="Tech Lead"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={peopleserveHighlights}
+    projectName="PeopleServe — Human Resource Information System"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={spectrumHighlights}
+    projectName="Spectrum Investments - In-house API"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={entergoHighlights}
+    projectName="Entrego - Booking Website"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={chatbotsHighlights}
+    projectName="Chatbots - In-house projects"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={honestBeeHighlights}
+    projectName="HonestBee - Booking Website"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+  <ExperienceHighlights
+    items={botbrosHighlights}
+    projectName="BotBros AI - Website, Junior Full Stack Engineer"
+    jobTitle="Software Engineer"
+    isIndented={true}
+  />
+</WorkSection>

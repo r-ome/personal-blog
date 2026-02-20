@@ -1,0 +1,21 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const highlights = [
+  "E-commerce and digital health platform.",
+  "Stabilized storefront by removing recurring UI defects and consolidating patterns across pages.",
+  "Modernized legacy jQuery modules into reusable components and simplified CSS with Tailwind.",
+  "Improved mobile behavior and layout consistency across high-traffic views.",
+  "Worked within legacy constraints while raising code quality through small, safe refactors.",
+  "Technologies used: HTML, CSS, jQuery, SASS, Tailwind CSS, PHP, Laravel",
+];
+---
+
+<WorkSection
+  title="HealthyLife Company Pty Ltd."
+  subtitle="Senior Software Engineer"
+  duration="July 2022 - May 2024"
+>
+  <ExperienceHighlights items={highlights} />
+</WorkSection>

@@ -1,0 +1,24 @@
+---
+import "../styles/global.css";
+
+import HeaderNav from "../components/HeaderNav.astro";
+import RootLayout from "./RootLayout.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<RootLayout>
+  <main>
+    <div class="h-full max-w-187.5 mx-auto p-2">
+      <div>
+        <HeaderNav />
+      </div>
+
+      <slot />
+    </div>
+  </main>
+</RootLayout>

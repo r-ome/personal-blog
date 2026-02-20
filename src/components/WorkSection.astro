@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  duration?: string;
+  isIndented?: boolean;
+}
+
+const { title, subtitle, duration, isIndented = true } = Astro.props;
+---
+
+<section class="mb-10 px-4">
+  <div>
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div>
+        <h2 class="font-semibold text-2xl">{title}</h2>
+        <h3 class="text-lg">{subtitle}</h3>
+      </div>
+      {
+        duration ? (
+          <div class="flex items-center">
+            <h3 class="text-md text-gray-500">{duration}</h3>
+          </div>
+        ) : null
+      }
+    </div>
+
+    <div class={`text-sm ${isIndented ? "px-4 " : ""}`}>
+      <slot />
+    </div>
+    <hr class="border-gray-300 my-4" />
+  </div>
+</section>

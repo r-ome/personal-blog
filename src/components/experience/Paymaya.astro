@@ -1,0 +1,21 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const highlights = [
+  "Business management platform for payment, banking, and loan solutions.",
+  "Designed file-based disbursement workflow using S3 -> SQS -> Lambda -> RDS with DLQs and idempotency.",
+  "Built CRUD services with Serverless Framework for React front-end and Node.js back-end.",
+  "Ran targeted load tests to validate batch processing behavior and tune concurrency.",
+  "Collaborated in reviews and sprint planning with engineers, QA, and product.",
+  "Technologies used: React 17, Redux, Node.js, AWS Lambda, SQS, RDS, S3, Serverless Framework",
+];
+---
+
+<WorkSection
+  title="PayMaya Philippines Inc."
+  subtitle="Senior Software Engineer"
+  duration="May 2021 - July 2022"
+>
+  <ExperienceHighlights items={highlights} />
+</WorkSection>

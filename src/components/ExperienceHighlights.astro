@@ -1,0 +1,55 @@
+---
+type Highlight = string | { text: string; href?: string };
+
+interface Props {
+  items: Highlight[];
+  jobTitle?: string;
+  projectName?: string;
+  isIndented?: boolean;
+}
+
+const { items, jobTitle, projectName, isIndented = false } = Astro.props;
+
+const normalize = (item: Highlight) =>
+  typeof item === "string" ? { text: item } : item;
+---
+
+<div class="mb-4">
+  <div>
+    {
+      projectName ? (
+        <div class="font-semibold text-lg">{projectName}</div>
+      ) : null
+    }
+    {jobTitle ? <div class="font-semibold text-md">{jobTitle}</div> : null}
+  </div>
+
+  <ul
+    class={`list-disc marker:text-gray-400 leading-7 ${isIndented ? "px-4" : ""}`}
+  >
+    {
+      items.map((raw) => {
+        const item = normalize(raw);
+
+        return (
+          <li>
+            {item.href ? (
+              <>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-600 hover:underline"
+                >
+                  {item.text}
+                </a>
+              </>
+            ) : (
+              <>{item.text}</>
+            )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>

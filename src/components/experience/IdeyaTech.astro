@@ -1,0 +1,17 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const highlights = [
+  "Authored test cases that expanded coverage of core web flows.",
+  "Performed manual functional testing and documented issues for fast fixes.",
+];
+---
+
+<WorkSection
+  title="Ideyatech Inc."
+  subtitle="QA Intern"
+  duration="Oct 2016 - Jan 2017"
+>
+  <ExperienceHighlights items={highlights} />
+</WorkSection>
