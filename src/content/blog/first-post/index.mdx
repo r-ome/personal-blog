@@ -4,6 +4,7 @@ description: "This is my first blog post"
 date: 2026-02-20
 draft: false
 slug: first-post
+show: true
 ---
 
 import { Image } from "astro:assets";
@@ -11,11 +12,18 @@ import hero from "./images/baguio-1.jpeg";
 
 # This is a HEADER
 
-<Image
-  src={hero}
-  alt="baguio-photo"
-  class="max-w-3xl h-auto mx-auto rounded-md"
-/>
+<figure>
+  <Image
+    src={hero}
+    alt="baguio-photo"
+    widths={[480, 768, 1024, 1280]}
+    sizes="(max-width: 768px) 100vw, 768px"
+    class="w-full max-w-3xl h-auto mx-auto rounded-md my-6"
+  />
+  <figcaption class="text-gray-500 text-center mt-2">
+    Photo taken from baguio last something something
+  </figcaption>
+</figure>
 
 ## This is a H2 Header
 
