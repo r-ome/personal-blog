@@ -22,10 +22,8 @@ if (!post.data.show) {
 
 <PageLayout title="blog">
   <div>
-    <h1 class="text-test">{post.data.title}</h1>
-    <p>{formatDate(post.data.date)}</p>
-
     <article class="prose prose-lg mt-6 max-w-none">
+      <p>{formatDate(post.data.date)}</p>
       <Content />
     </article>
   </div>
