@@ -1,35 +1,235 @@
 ---
 title: "Deploying my Blog"
-description: "This is my first blog post"
-date: 2026-02-20
+description: "How I built and deployed this blog using Astro, AWS S3, and CloudFront."
+date: 2026-02-21
 draft: false
 slug: deploy-my-blog
-show: false
+show: true
 ---
 
 # Documenting on how I deployed my blog
 
 ## Why?
 
-I've been a software engineer for years, and I've been reading blogs here and there and I really think I've already waited too long for build my own.
+I've been a software engineer for years, and I've been reading blogs here and there and I really think I've already waited too long to build my own.
 
-And since I'm getting out now with my personal hiatus, I think it's a nice small project I can work on.
+And since I'm coming out of my personal hiatus, I think it's a nice small project I can work on.
 
 I've been thinking and checking technologies that I'll use but I've decided on using Astro as a static generator and deploying it with AWS S3 and Cloudfront. No overwhelming technologies.
 
 So, first of all, I need to list down all of the things that I would do.
 
-1. Check Astro Documentation and on how to start a project with it. Check the features available and leverage on it.
+1. Check Astro Documentation and on how to start a project with it. Check the features available and leverage them.
 2. Since I choose to use static sites, I'll just use AWS S3 for serving static pages.
 3. Buy a domain `jeromeagapay.com`. (I'm not really good at choosing catchy names so I just settled with my name).
 4. Connect the domain with Cloudfront.
 5. Find a minimalist design. (I'm not really good at creating designs)
 6. Code the website.
-7. Deploy and add github actions for automating syncing aws s3 with build files.
-8. Test and experiment things.
+7. Upload the build files in s3 bucket
+8. Deploy and add github actions for automating syncing aws s3 with build files.
+9. Test and experiment things.
 
 ---
 
 ## Checking out Astro
 
-As I'm looking for lightweight static site generator. I've stumbled upon [Astro](https://astro.build/). I've read a lot of good feedbacks about it and wanted to try it. I've considered using NextJS but since I've already created a freelance project with it and wanted to try new something new, I've settled with Astro. 
+As I'm looking for lightweight static site generator. I've stumbled upon [Astro](https://astro.build/). I've read a lot of good feedback about it and wanted to try it. I've considered using NextJS but since I've already created a freelance project with it and wanted to try something new, I've settled with Astro.
+
+### Layouts
+
+Since I want the pages to be in uniform on how it looks, Astro has layouts, which is just a regular `.astro` components that wraps your page content.
+
+```
+// PageLayout.astro
+<RootLayout>
+  <main>
+    <div class="h-full max-w-187.5 mx-auto p-2">
+      <div>
+        <HeaderNav />
+      </div>
+
+      <div class="mt-10">
+        <slot />
+      </div>
+    </div>
+  </main>
+</RootLayout>
+
+```
+
+The code above is an example of my `<PageLayout/>`. Every component that I'll put inside it will follow its structure and will render using the `<slot/>` placeholder. As you can see, the `<RootLayout/>` is wrapping the `<PageLayout />`. The `<RootLayout/>` only contains imports that I only need once.
+
+### File-Based routing
+
+Astro uses the same file-based routing in NextJS where the folder/file structure in your `src/pages` directory maps to your URL routes. You don't manually define routes, the file system is your router. Which makes the routing easier for static websites.
+
+Currently as of this writing, I only have two main routes, which is the Home (`/`) and the Blog (`/blog`) pages.
+
+Now, if you want dynamic paths with a same layout, you could use the Dynamic Route. Where a file name has brackets enclosing a route parameter. e.g. `[slug].astro`
+
+```
+src/
+  pages/
+    blog/
+      [slug].astro <- a dynamic route
+```
+
+```
+// src/pages/blog/[slug].astro
+---
+import { getCollection, render } from "astro:content";
+import { formatDate } from "../../utils/date";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", (blog) => blog.data.show);
+
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+if (!post.data.show) {
+  return Astro.redirect("/404");
+}
+---
+
+<PageLayout title="blog">
+  <div>
+    <article class="prose prose-lg mt-6 max-w-none">
+      <p>{formatDate(post.data.date)}</p>
+      <Content />
+    </article>
+  </div>
+</PageLayout>
+
+```
+
+In the code above, I've used `getCollection()` function which fetches your collection data. You can use this anywhere you want to fetch your defined collections. `getStaticPaths()` is a reserved function name that Astro specifically looks for as a named export, you need this function to tell Astro which paths to generate at build time and you need those for dynamic routes.
+
+### Collections
+
+The Blog Page contains a list of my blog. Now, this is where the fun part begins.
+
+In Astro, you need to define your Collections (aka **Content Collections**). These are structured content like blog posts, docs or any markdown(.md|.mdx) files.
+
+So, inside your `src/content` folder, you can define the base folder of your collections. After that, you'll define the Collection under the root folder by adding a `content.config.ts` file. Since I'm using Astro version 5, the config file must be in the root folder. In older versions of Astro (< v4) the config lived inside the `src/content/config.ts`.
+
+Inside your config file, you'll be also using Loaders, these are functions that tell Astro where and how to fetch your collection data.
+
+```
+// src/content.config.ts
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+const blog = defineCollection({
+  loader: glob({ base: "./src/content/blog", pattern: "**/index.{md,mdx}" }),
+  schema: z.object({
+    slug: z.string(),
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    show: z.boolean().optional(),
+  }),
+});
+
+export const collections = { blog };
+```
+
+In the code above, you'll see how I defined my "blog". The `glob` function loads multiple files from disk matching a certain pattern. I'm using `.md|.mdx` files for my blog. But you can use `file()` for loading a single JSON or YAML file where each entry is an item. You can also write custom loaders to fetch from any sources.
+
+You'll also notice that I've imported [Zod](https://zod.dev). Zod is a schema validator, it's a tool that checks whether your data matches an expected shape/structure. You define the rules, and it verifies that your data follows them.
+
+```
+// example of a custom loader
+loader: async () => {
+  const res = await fetch("https://api.example.com/posts");
+  const posts = await res.json();
+  return posts.map(post => ({ id: post.slug, ...post }));
+}
+```
+
+### `.md|.mdx` Files
+
+Markdown is a lightweight markup language for writing formatted content using plain text syntax. `MDX` is Markdown + JSX. It lets you use components inside your markdown, making your markdowns more useful when plain markdown isn't enough.
+
+In order to render markdowns, you can use `<Content>` to render the Markdown contents in your Astro file.
+
+About styling, the easiest and most common way to wrap your content with styles (particularly typography) is to use `@tailwindcss/typography` and add the class `prose`.
+
+## Buying a domain
+
+I've been looking for a cheap domain that I can buy and use. So I searched the internet on where to buy one, I stumbled upon [Spaceship](https://www.spaceship.com), where I bought my domain for only $9.08 (Php 526.06) a year.
+
+## Connecting domain with Cloudfront
+
+After buying a domain, I want to attach it now to Cloudfront and let Cloudfront+S3 serve my website.
+
+In order to attach my domain to Cloudfront, I first need to request an ACM(AWS Certificate Manager) public certificate for the domains `jeromeagapay.com` and `www.jeromeagapay.com`.
+
+After requesting for a public certificate, ACM will show 1-2 CNAME records for validation that I will use in my Spaceship account. I added the CNAME records exactly as ACM shows. Where the **Host** is the CNAME name, and the **Value** is the CNAME value.
+
+After adding it to my Spaceship account, I went to Cloudfront and created a distribution where I added the alternate domain names (`jeromeagapay.com` and `www.jeromeagapay.com`) and under the SSL certificate, I added the ACM certificate I requested earlier.
+
+Going back to my Spaceship account, I copied my cloudfront distribution domain name and added it to my DNS records. where the **Host** is "@"(root domain) and "www"(www subdomain) and the **Value** is my cloudfront distribution name.
+
+After the DNS propagates (which will take more or less 20 minutes to an hour), my domains are now accessible.
+
+## Uploading the build files in S3
+
+Since the origin of my Cloudfront is an S3 bucket which I've created when learning AWS. I need now to upload or sync my build files in the S3 bucket.
+
+So I build first my blog using `npm run build` or `astro build` which puts the build files under the `dist/` folder. It's what I need to sync in my S3 bucket.
+
+There are multiple ways to sync "folders" in S3. I used the CLI command:
+
+```
+aws s3 sync dist/ s3://<BUCKET_NAME>/<PREFIX_NAME> --profile <AWS_PROFILE> --delete
+```
+
+This commands syncs my local `dist/` folder to an s3 bucket. The `--profile <AWS_PROFILE>` specifies which AWS credentials profile to use and the `--delete` option deletes files in the destination that no longer exists in the source, keeping S3 in sync with my local `dist/` folder.
+
+After syncing my dist folder, I checked my website and Voilà, my website is now live.
+
+## Pushing to Github and adding Github actions
+
+After checking out if things would've work (and it did. \*phew). I now commit and pushed my code in my [Github](https://github.com/r-ome/personal-blog).
+
+Now, I know that syncing and pushing changes will be tedious if done manually, so I added a github action to automate my deployment.
+
+I added a `deploy.yml` which automates the build from astro and automates syncing in S3. To setup my github action, I need some secrets/variables from AWS. `AWS_REGION`, `AWS_ROLE_ARN`, `CLOUDFRONT_DISTRIBUTION_ID`, `S3_BUCKET`.
+
+- `AWS_REGION` - Where my resources are located.
+- `AWS_ROLE_ARN` - The role needed for github to have an access in my S3 and Cloudfront.
+- `CLOUDFRONT_DISTRIBUTION_ID` - For creating invalidation after the website is synced in the S3 bucket.
+- `S3_BUCKET` - The bucket where the build files are located
+
+I've added these secrets/variables under my github repo and pushed the `deploy.yml` file.
+
+My `deploy.yml` file has 1 job(deploy) that has 7 steps: Checkout, Setup Node, Install dependencies, Build, Configure AWS Credentials, Sync to S3 and Invalidate CloudFront.
+
+- Checkout: The step will checkout the branch that I've dedicated to deploy.
+- Setup Node: The step where I indicated which node version use.
+- Install dependencies: Just a simple `npm ci` command.
+- Build: The astro build command or `npm run build`.
+- Configure AWS credentials: Where I added what role-to-assume and what region to use.
+- Sync to S3: The `aws s3 sync ...` command that I used earlier.
+- Invalidate Cloudfront: This creates an invalidation which forces Cloudfront to clear its cache so it fetches the fresh files from S3 on the next request.
+  ```
+  aws cloudfront create-invalidation \
+  --distribution-id <CLOUDFRONT_DISTRIBUTION_ID> \
+  --paths "/*"
+  ```
+
+## Testing Things out
+
+After deploying the `deploy.yml`, I tested things out and pushed some changes. And it worked!
+
+### Note:
+
+I wrote this to remind me of what I did for this deployment. Particularly the steps on how I made things from scratch to a fully accessible website.
