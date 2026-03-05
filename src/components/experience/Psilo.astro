@@ -1,0 +1,22 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const highlights = [
+  "Architected and built a full-stack personal cloud storage app using AWS CDK for infrastructure-as-code, provisioning Cognito, API Gateway, Lambda, SQS, Aurora Serverless v2, and S3 Glacier Flexible Retrieval.",
+  "Implemented cost-optimized cold storage using S3 Glacier Flexible Retrieval, significantly reducing hosting costs compared to standard S3",
+  "Deployed on Vercel; organized code with clean architecture principles.",
+  "Designed monorepo structure separating frontend (Next.js), infrastructure (CDK stacks), and Lambda services for clean architecture and maintainability",
+  "Applied Backend for Frontends (BFF) pattern with decoupled async photo metadata processing via SQS and Dead Letter Queue for reliability.",
+  "Used Aurora Data API with Lambda (no VPC/NAT gateway) to simplify database connectivity and reduce infrastructure complexity.",
+  "Integrated Drizzle ORM with Aurora Serverless v2 with database migrations for type-safe SQL and version-controlled schema management",
+  "Technologies used: Next.js, TypeScript, Node.js, AWS CDK, Lambda, API Gateway, Aurora Serverless v2, S3 Glacier, Cognito, SQS, Drizzle ORM",
+];
+---
+
+<WorkSection
+  title="PSilo (Personal Silo)"
+  subtitle="Self-hosted image storage platform built as an alternative to commercial cloud storage solutions"
+>
+  <ExperienceHighlights items={highlights} />
+</WorkSection>
