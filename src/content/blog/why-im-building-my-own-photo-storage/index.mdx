@@ -1,0 +1,38 @@
+---
+title: "Creating my own Cloud Storage (Part 1)"
+description: "Documenting on how I created my own cloud storage"
+date: 2026-02-24
+draft: false
+slug: why-im-building-my-own-photo-storage
+show: true
+---
+
+# Why I'm bulding my own Photo Storage (Part 1)
+
+## Why?
+
+I've been paying Google $9.99/month for 2TB of storage I barely use, and I'm done with it.
+
+10 years ago you would never think about storage since external hard drives or flash drives are available and you wouldn't save so much photos, you would print them physically and put them in a physical album.
+
+Eventually, Google expanded their products and provided ["Plans" or "Tiers"](https://one.google.com/about/plans) for cloud storages. There was a time in 2020, that they would offer discounted prices for their plans, I got an email where I can upgrade my default storage of 15GB to 2TB for just $50 annually and I grabbed it and been paying for the storage subscription ever since, then suddenly they pulled out the discount and I've been paying the regular rate for the cloud storage of 2TB for almost double the price even though I only consume just 18% of the storage.
+
+I've been thinking recently on how costly it is to pay that amount for only using 18% of the product, and been thinking to migrate or switch to a new provider but since almost all of them fall on the same price range I realized that I would just opt out and just create my own.
+
+Not only that, I've been considering the privacy too. Why would I even give these companies my personal photos, videos, and personal files when I could just create my own, where I could manage them the way I want it.
+
+I've been eyeing on AWS, since I've been learning it and wanted to create new projects with it. They're offering a cloud storage ([AWS S3](https://aws.amazon.com/s3)) with reasonable prices for certain tiers. This idea popped in my head when I learned about their Glacier storage class, so I started building my own cloud storage using it.
+
+## AWS S3 Glacier
+
+AWS S3 provides tiers for their storages. Now, since I don't frequently access my files that often. I'm going to use AWS S3 Glacier Storage Class. It's named "Glacier" because of the concept of having _"cold"_ storages.
+
+Storing "_objects"_ in Glacier is very cost-effective. It will only cost less than one cent(&lt;$0.1) to store a 1GB of memory per month, but there's a catch. There's a retrieval cost that you need to pay when fetching or retrieving the object that you stored. Think of it like this, you rented a storage unit in a big warehouse and every time you want to get the objects that you stored, you have to pay for the person who gets it for you. You'll pay for how fast the person will get it and how heavy the objects that you will get.
+
+Now, there's three options to retrieve your objects:
+
+1. Expedited retrieval: The quickest way to access your data stored in the AWS S3. You can retrieve your objects within 1 to 5 minutes which costs $0.03 per GB of data retrieved.
+2. Standard retrieval: You can access your data within AWS S3 within hours. You can retrieve your objects within 3 to 5 hours which costs around $0.01 per GB of data retrieved.
+3. Bulk retrieval: This has the lowest cost but has the longest retrieval time out of all the 3 options. You can retrieve your objects within 5 to 12 hours which costs around $0.0025 per GB of data retrieved.
+
+Now that I've decided on the storage layer, the next step is figuring out the rest of the architecture and how files actually get uploaded, stored and retrieved in which I'll cover in Part 2.
