@@ -1,0 +1,24 @@
+---
+import WorkSection from "../WorkSection.astro";
+import ExperienceHighlights from "../ExperienceHighlights.astro";
+
+const highlights = [
+  {
+    text: "Link to github repository",
+    href: "https://github.com/r-ome/ph-law-rag",
+  },
+  "Built a local-first Retrieval-Augmented Generation assistant over Philippine law primary sources, running entirely on a local LLM with no cloud API dependency.",
+  "Designed a hybrid retrieval pipeline combining dense vector search (Qdrant) with sparse BM25, followed by cross-encoder reranking for higher answer relevance.",
+  "Implemented incremental document sync via content hashing so re-runs skip unchanged statutes, with grounded generation that cites article/section numbers and abstains when the corpus can't support an answer.",
+  "Measured answer quality with RAGAS semantic eval metrics and shipped both a Streamlit chat UI and a FastAPI service for programmatic access.",
+  "Technologies used: Python, LlamaIndex, Ollama (Mistral), Qdrant, BM25, cross-encoder reranking, RAGAS, FastAPI, Streamlit, SQLite, Docker",
+];
+---
+
+<WorkSection
+  title="PH Law RAG"
+  subtitle="Local-first RAG assistant over Philippine law with hybrid search, reranking, and grounded citations"
+  duration="Apr 2026 - Present"
+>
+  <ExperienceHighlights items={highlights} />
+</WorkSection>

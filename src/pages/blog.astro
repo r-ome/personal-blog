@@ -2,8 +2,9 @@
 import { formatDate } from "../utils/date";
 import { getCollection } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
+import { isPublishedBlogPost } from "../utils/blog";
 
-const blogs = await getCollection("blog", (blog) => blog.data.show);
+const blogs = await getCollection("blog", isPublishedBlogPost);
 blogs.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
