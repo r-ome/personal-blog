@@ -7,17 +7,18 @@ const highlights = [
     text: "Link to github repository",
     href: "https://github.com/r-ome/aws-docs-raglab",
   },
-  "Built a local-first RAG system over curated AWS documentation that answers questions with a local LLM and cites the source docs for verification.",
-  "Implemented a document ingestion pipeline that fetches an allowlist of AWS pages, normalizes HTML to clean text, and detects changes via content hashing to only reprocess what changed.",
+  "Built a local-first RAG system over curated AWS and Amazon Bedrock documentation that answers questions with a local LLM and cites the source docs for verification.",
+  "Implemented a document ingestion pipeline that fetches an allowlist of AWS and Amazon Bedrock pages, normalizes HTML to clean text, and detects changes via content hashing to only reprocess what changed.",
+  "Curated Bedrock documentation covering model inference, Knowledge Bases, Guardrails, Agents, Flows, batch inference, and evaluations as the primary RAG corpus.",
   "Chunked and embedded documents locally with sentence-transformers, stored vectors in ChromaDB, and tracked document metadata and versions in SQLite.",
   "Exposed the pipeline through both a Typer CLI and a FastAPI service, with an eval harness scoring answers against a question dataset.",
-  "Technologies used: Python, Ollama, sentence-transformers, ChromaDB, FastAPI, Typer, SQLite, BeautifulSoup",
+  "Technologies used: Python, Ollama, sentence-transformers, ChromaDB, FastAPI, Typer, SQLite, BeautifulSoup, Amazon Bedrock docs",
 ];
 ---
 
 <WorkSection
-  title="AWS Docs RAG Lab"
-  subtitle="Local-first RAG system over AWS documentation with incremental sync and grounded citations"
+  title="AWS & Amazon Bedrock Docs RAG Lab"
+  subtitle="Local-first RAG system over AWS and Amazon Bedrock documentation with incremental sync and grounded citations"
   duration="Apr 2026"
 >
   <ExperienceHighlights items={highlights} />

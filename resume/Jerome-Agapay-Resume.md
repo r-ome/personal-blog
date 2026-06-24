@@ -100,14 +100,15 @@ Credly Badge: <a href="https://www.credly.com/badges/785dceab-7921-4e55-92f0-bc7
 
 **Technologies:** Python, LlamaIndex, Ollama (Mistral), Qdrant, BM25, cross-encoder reranking, RAGAS, FastAPI, Streamlit, SQLite, Docker
 
-**AWS Docs RAG Lab - Documentation Q&A System** <span class="date">| Apr 2026</span>
-<p class="role-sub">Local-first RAG system over curated AWS documentation with grounded citations</p>
+**AWS & Amazon Bedrock Docs RAG Lab - Documentation Q&A System** <span class="date">| Apr 2026</span>
+<p class="role-sub">Local-first RAG system over curated AWS and Amazon Bedrock documentation with grounded citations</p>
 
-- Built a document ingestion pipeline that fetches an allowlist of AWS pages, normalizes HTML to clean text, and detects changes via content hashing to only reprocess what changed.
+- Built a document ingestion pipeline that fetches an allowlist of AWS and Amazon Bedrock pages, normalizes HTML to clean text, and detects changes via content hashing to only reprocess what changed.
+- Curated Bedrock documentation covering model inference, Knowledge Bases, Guardrails, Agents, Flows, batch inference, and evaluations as the primary RAG corpus.
 - Chunked and embedded documents locally with sentence-transformers and stored vectors in ChromaDB, tracking metadata and versions in SQLite.
 - Exposed the pipeline through both a Typer CLI and a FastAPI service, with an eval harness scoring answers against a question dataset.
 
-**Technologies:** Python, Ollama, sentence-transformers, ChromaDB, FastAPI, Typer, SQLite, BeautifulSoup
+**Technologies:** Python, Ollama, sentence-transformers, ChromaDB, FastAPI, Typer, SQLite, BeautifulSoup, Amazon Bedrock docs
 
 **PSILO - Personal Cloud Storage** <span class="date">| Feb 2026 - Apr 2026</span>
 <p class="role-sub">Self-hosted image storage platform built as an alternative to commercial cloud storage solutions</p>
