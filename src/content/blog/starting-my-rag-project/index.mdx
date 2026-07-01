@@ -1,0 +1,76 @@
+---
+title: "Starting my RAG Project"
+description: "Documenting the start of my RAG project and how I am thinking through LLMs, retrieval, and Philippine legal documents."
+date: 2026-07-01
+draft: false
+slug: starting-my-rag-project
+show: true
+---
+
+# Starting my RAG Project
+
+I started my RAG project because I've been intrigued by the kind of projects you can build with LLMs. You can create an assistant with better accuracy by grounding it in the documents that you give it.
+
+I wanted to create a legal assistant that could fetch documents, reason over them, and give me ideas I can think through, so I thought of using Philippine legal documents as my corpus.
+
+I am writing this to document my understanding while building a RAG project.
+
+So what's RAG? RAG means Retrieval-Augmented Generation. Basically, it is a way for a model to **generate** an answer **augmented** by **retrieved** information.
+
+---
+
+## Understanding LLMs
+
+Before I started my RAG project, I was curious about LLMs and how they *"generate"* an answer. So I scoured the internet, researching how it works. I read that it basically predicts the next word based on the previous words (an oversimplified example). But that got me more interested in it. I found some books and articles to read about it.
+
+So, initially when a user inputs a "*query*" to a model, the model will first split the input into tokens. Tokens are the chunks that a model processes. They can be a word, a subword (part of a word if that word is long), a text symbol, or punctuation. Each token is mapped to an ID, which is a number the model can work with since models understand numbers better than words.
+
+After converting the user's input into tokens (AKA *tokenization*), the model turns those token IDs into internal vector representations. These vectors help the model process the meaning and context of the user's query as it passes through the model.
+
+In a RAG system, there is another kind of embedding involved. The user's query can also be converted into a vector so the system can search a vector store for relevant document chunks. Those retrieved chunks are then passed to the LLM as extra context.
+
+The model will then use its internal representations to process useful information about the meaning and context of the user's query. From there the tokens pass through what are called transformer layers. Each layer updates the token's representation using the others around it, and that's how the model figures out that "bank" in "river bank" isn't the money kind.
+
+After being aware of the context of the user's query, the model will then predict the next tokens to return to the user. It repeats this process predicting one token at a time until it produces a complete response for the user.
+
+---
+
+## Corpus
+
+After understanding how a model works, I then researched how a model could be used in a project and I stumbled upon RAG.
+
+RAG basically means that a model is configured to use certain documents (or corpus) to generate answers for a user.
+
+In some industries a corpus could be a company's FAQs, troubleshooting guides, information sheets, policy documents, and many more.
+
+Since this is a solo project and I don't have that kind of corpus, I thought of a corpus that is big enough to experiment with and publicly accessible, so I settled on Philippine legal documents as a corpus.
+
+I want to create a RAG system that would pull up relevant documents, or in this case, statutes if I want to know something about the law.
+
+---
+
+## Pipelines
+
+RAG basically follows a pipeline.
+
+1. **Data Ingestion**, which includes preparing, chunking, embedding, and storing the corpus.
+2. **Retrieval**, which finds context relevant to the user's query.
+3. **Generation**, where a model will produce an answer based on the user's query and the retrieved context.
+
+### Data Ingestion
+
+Data ingestion is where you prepare your document corpus. The bigger picture is to prepare documents, prepare a chunking strategy, then save the documents in storage and index the resulting chunks.
+
+For this project, my corpus will consist of Philippine legal sources: Supreme Court decisions, the Constitution, statutes/acts, and presidential issuances. They're all publicly available online, so I can fetch them and keep a local copy in my project.
+
+### Retrieval
+
+After ingestion, retrieval starts when a user asks a question. The system embeds the query, searches the vector store for relevant chunks, and passes those chunks to the generation step.
+
+This is where it gets interesting as the project progresses. I'll write about this in another post.
+
+### Generation
+
+The retrieved chunks together with the user's query and a given set of instructions or prompt will be processed by the model. The generator model will then respond to the user.
+
+In the next post, I will write about the architecture of the project and how it evolved into what it is today.
